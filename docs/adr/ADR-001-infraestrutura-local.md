@@ -13,7 +13,7 @@ Para organizar e gamificar essa divisão de tarefas, foi necessário escolher on
 **Local (computador da casa):** Custo zero, sem dependência de serviços externos, acesso via IP local na rede Wi-Fi. Complexidade de setup compatível com o escopo do projeto.
 
 ## Decisão
-O sistema rodará localmente no computador da casa, acessado via `http://192.168.1.X:8080` na rede Wi-Fi. No MVP, o servidor será o computador Windows atual. Após o MVP, será migrado para um Raspberry Pi para rodar de forma contínua sem ocupar o computador principal.
+O sistema rodará localmente no computador da casa, acessado via `http://192.168.1.X:8080` na rede Wi-Fi. No MVP, o servidor será o computador Windows atual. Após o MVP, será migrado para um Raspberry Pi para rodar de forma contínua sem ocupar o computador principal. O docker compose terá apenas 2 containers, com o Spring Boot servindo o backend e o front estático.
 
 ## Consequências
 
