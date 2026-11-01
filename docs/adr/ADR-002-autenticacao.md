@@ -1,10 +1,10 @@
 # ADR-002: Decisão de Autenticação no MVP
 
 ## Status
-Aceito
+Aceito (revisado em 31/10/2026)
 
 ## Contexto
-O sistema será usado exclusivamente pelos 4 membros da família dentro da própria residência, acessado via rede Wi-Fi local. A experiência de uso precisa ser simples e sem fricção — especialmente para os membros mais velhos da família. O sistema precisa identificar quem realizou cada tarefa para distribuir pontos corretamente.
+O sistema será usado exclusivamente pelos 4 membros da família, acessado via rede Wi-Fi local e, fora de casa, pela rede privada do Tailscale (ADR-001). A experiência de uso precisa ser simples e sem fricção — especialmente para os membros mais velhos da família. O sistema precisa identificar quem realizou cada tarefa para distribuir pontos corretamente, e esses pontos servem de base para a mesada.
 
 ## Alternativas Consideradas
 
@@ -26,5 +26,5 @@ O MVP não terá autenticação. A identificação do membro é feita por seleç
 - Decisão consciente e documentada — reconhece a ausência como escolha técnica, não omissão
 
 ### Negativas
-- Qualquer pessoa na rede local pode acessar o sistema — aceitável dado que a rede guest é separada e o acesso externo não é um requisito
-- Sem auditoria de autenticidade — quem conclui a tarefa declara quem foi, sem verificação
+- Qualquer pessoa na rede local pode acessar o sistema — aceitável dado que a rede guest é separada; fora de casa, apenas aparelhos da rede Tailscale da família têm acesso
+- Sem auditoria de autenticidade — quem conclui a tarefa declara quem foi, sem verificação. Como os pontos definem a mesada, um membro poderia registrar uma tarefa em nome de outro. Risco aceito: as conclusões são conferidas diariamente e um registro indevido pode ser removido individualmente (ADR-005)

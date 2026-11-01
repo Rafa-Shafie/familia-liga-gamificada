@@ -3,9 +3,9 @@
 *Última atualização: 31/10/2026*
 
 ## Resumo
-- **Onde paramos:** Spring Boot conectado ao Postgres, com o Flyway aplicando a migration inicial (V1). Falta só revisar os ADRs para fechar a Fatia 0.
-- **O que está commitado:** infraestrutura do compose (Postgres 18), `.env` fora do git com `.env.example`, configuração do datasource, Flyway com V1, ADR-004 e CLAUDE.md.
-- **Fatia atual:** Fatia 0 — Retomada.
+- **Onde paramos:** Fatia 0 concluída. Spring Boot conectado ao Postgres, Flyway aplicando a V1, ADRs 001 a 005 coerentes com as decisões fechadas.
+- **O que está commitado:** infraestrutura do compose (Postgres 18), `.env` fora do git com `.env.example`, configuração do datasource, Flyway com V1, CLAUDE.md e ADRs 001 a 005.
+- **Fatia atual:** Fatia 1 — Registrar conclusão (ainda não iniciada).
 
 ## Fatia 0 — Retomada
 
@@ -16,13 +16,13 @@
 - [x] Flyway aplicando `V1__init.sql`, Hibernate em `validate`, `open-in-view: false`
 - [x] ADR-004 — Flyway como único dono do schema
 - [x] CLAUDE.md com as regras de trabalho e as decisões fechadas
-- [ ] Revisar ADR-001: PC sempre ligado no MVP, Raspberry Pi depois, Tailscale para acesso externo
-- [ ] Revisar ADR-002: risco de fraude aceito, conferência manual, relação com a mesada
-- [ ] Revisar ADR-003: status (recorrência foi para a Fatia 4) e pontos gravados no momento da conclusão
-- [ ] Decidir quais decisões fechadas do CLAUDE.md sem ADR merecem um (ex.: histórico por conclusão + pontos só daqui pra frente)
+- [x] ADR-001 revisado: PC sempre ligado no MVP, Raspberry Pi depois, Tailscale, alternativas Vercel/Supabase
+- [x] ADR-002 revisado: risco de fraude aceito, conferência manual, relação com a mesada
+- [x] ADR-003 revisado: status Proposto (Fatia 4), argumento de normalização alinhado ao ADR-005
+- [x] ADR-005 — Histórico de pontos: um registro por conclusão, pontos congelados, totais calculados
 
 ## Próximo passo concreto
-Revisar o ADR-001 junto, fechando a Fatia 0. Depois: começar a modelagem da Fatia 1 (registrar conclusão).
+Começar a Fatia 1: modelar o registro de conclusão e o cadastro mínimo de tarefas que o seed precisa (só o que a fatia exige).
 
 ## Pendências técnicas (não são decisões)
 - `Dockerfile` ainda é placeholder e não está commitado. Necessário ao fim da Fatia 1, para a família usar em casa.

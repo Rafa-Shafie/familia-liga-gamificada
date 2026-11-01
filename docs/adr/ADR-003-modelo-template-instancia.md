@@ -1,7 +1,13 @@
 # ADR-003: Modelo de Domínio — Template, Escala e Instância
 
 ## Status
-Aceito
+Proposto (revisado em 31/10/2026)
+
+A implementação foi adiada para a Fatia 4 (escala e recorrência). Por ser a
+parte mais complexa e menos validada do domínio, este modelo será reavaliado
+com o uso real antes de ser implementado. Até lá, a Fatia 1 registra
+conclusões avulsas (ADR-005); como elas se relacionam com `InstanciaTarefa`
+será decidido na Fatia 4.
 
 ## Contexto
 O sistema precisa gerenciar tarefas recorrentes com regras complexas para
@@ -16,9 +22,11 @@ foi originalmente atribuído.
 
 **Tabela única de tarefas:** Criar uma única estrutura com todas as
 informações — nome, pontos, responsável e data — em cada registro.
-Descartado pois geraria dados duplicados em centenas de registros por ano.
-Qualquer alteração de pontos ou nome exigiria atualizar todos os registros
-históricos. Viola os princípios de normalização de banco de dados relacional.
+Descartado pois misturaria o cadastro da tarefa (nome, categoria,
+recorrência, responsável) com cada ocorrência dela, repetindo essas
+informações em centenas de registros por ano. Renomear uma tarefa ou mudar
+sua recorrência exigiria atualizar todos esses registros. Viola os
+princípios de normalização de banco de dados relacional.
 
 **Criação manual pelo usuário:** O usuário cria os cards diariamente pela
 interface. Descartado pois dependeria de memória humana — membros poderiam
@@ -48,12 +56,14 @@ O domínio foi separado em 3 estruturas:
 
 ### Positivas
 - Alterações no ModeloTarefa refletem automaticamente em todas as
-  instâncias futuras
+  instâncias futuras. Os pontos de conclusões já registradas não mudam
+  (ADR-005)
 - Geração automática garante auditoria completa — card não concluído
   significa tarefa não feita
 - Transferência de responsabilidade registrada e auditável
 - Pontos sempre vão para quem realmente executou a tarefa
-- Banco de dados normalizado, sem duplicação de dados
+- Cadastro de tarefas normalizado. A única cópia intencional é o valor de
+  pontos no momento da conclusão, que é um fato histórico (ADR-005)
 
 ### Negativas
 - Maior complexidade de modelagem em relação a uma tabela única
