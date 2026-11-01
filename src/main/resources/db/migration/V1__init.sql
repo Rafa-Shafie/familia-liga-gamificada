@@ -1,0 +1,1 @@
+-- Migration inicial: valida a configuração do Flyway
