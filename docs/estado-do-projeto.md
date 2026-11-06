@@ -36,5 +36,6 @@ Começar a Fatia 1: modelar o registro de conclusão e o cadastro mínimo de tar
 | Conversão de pontos em mesada | Motivação central do projeto, regra ainda não definida | Fatia 3 |
 | Conclusão avulsa ↔ instância gerada | Como o registro da Fatia 1 se liga às instâncias do `@Scheduled` | Fatia 4 |
 | Penalidade por card não concluído | O ADR-003 sugere auditoria, mas sem consequência definida | Fatia 4 |
+| Motivo da transferência + penalidade | Tarefa atribuída a um membro e concluída por outro: registrar o motivo (ex.: "esqueceu", "estava fora") e penalizar conforme o motivo. Ideia do Rafa em 02/11/2026 | Fatia 4 |
 | Início da semana configurável | Segunda, domingo ou sábado | Fatia 3 |
 | Estratégia de testes de integração | O teste `contextLoads` depende do Postgres do compose rodando; avaliar Testcontainers | Fatia 1 |
