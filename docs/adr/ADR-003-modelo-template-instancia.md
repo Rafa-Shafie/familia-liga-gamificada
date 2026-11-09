@@ -1,17 +1,21 @@
 # ADR-003: Modelo de Domínio — Template, Escala e Instância
 
 ## Status
-Proposto (revisado em 31/10/2026)
+Proposto (revisado em 09/11/2026)
 
-A implementação foi adiada para a Fatia 4 (escala e recorrência). Por ser a
+A implementação foi adiada para a fatia de escala e recorrência. Por ser a
 parte mais complexa e menos validada do domínio, este modelo será reavaliado
-com o uso real antes de ser implementado. Até lá, a Fatia 1 registra
+com os testes da família antes de ser implementado. Até lá, a Fatia 1 registra
 conclusões avulsas (ADR-005); como elas se relacionam com `InstanciaTarefa`
-será decidido na Fatia 4.
+será decidido na fatia de recorrência.
+
+Com o produto multi-família (ADR-006), os membros deixam de ser um Enum e
+passam a ser registros de uma família; as três estruturas abaixo também
+pertencem a uma família.
 
 ## Contexto
-O sistema precisa gerenciar tarefas recorrentes com regras complexas para
-4 membros da família: tarefas diárias obrigatórias com dono fixo (arrumar
+O sistema precisa gerenciar tarefas recorrentes com regras complexas para os
+membros de uma família. Os exemplos vêm da família do autor: tarefas diárias obrigatórias com dono fixo (arrumar
 a cama, colocar louça na máquina), tarefas diárias de pool aberto sem dono
 fixo (passear com o Bob, dar comida e água), tarefas semanais (aspirar
 cômodos) e mensais (ir ao mercado). Além disso, um membro pode assumir a

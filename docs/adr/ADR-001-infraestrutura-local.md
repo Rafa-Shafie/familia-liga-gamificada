@@ -1,7 +1,13 @@
 # ADR-001: Infraestrutura Local vs. Cloud
 
 ## Status
-Aceito (revisado em 31/10/2026)
+Substituído pelo [ADR-006](ADR-006-produto-multi-familia.md) em 09/11/2026.
+
+O projeto virou um produto multi-família, sem hospedagem pública: fica pronto
+para deploy e roda localmente em Docker Compose. O texto abaixo é mantido como
+registro histórico.
+
+*Antes: Aceito (revisado em 31/10/2026).*
 
 ## Contexto
 Para organizar e gamificar essa divisão de tarefas, foi necessário escolher onde o sistema vai rodar. O sistema é de uso exclusivo dos 4 membros da família e é usado principalmente dentro da própria residência, via Wi-Fi. Eventualmente, é útil registrar uma tarefa fora de casa (ir ao mercado, por exemplo). O custo de infraestrutura é uma restrição não negociável — o projeto deve ter custo zero.

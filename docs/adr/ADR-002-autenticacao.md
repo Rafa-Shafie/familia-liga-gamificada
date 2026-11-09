@@ -1,7 +1,13 @@
 # ADR-002: Decisão de Autenticação no MVP
 
 ## Status
-Aceito (revisado em 31/10/2026)
+Substituído pelo [ADR-006](ADR-006-produto-multi-familia.md) em 09/11/2026.
+
+Com o produto multi-família, entram cadastro, login com Spring Security e
+membros como registros de uma família. O texto abaixo é mantido como registro
+histórico.
+
+*Antes: Aceito (revisado em 31/10/2026).*
 
 ## Contexto
 O sistema será usado exclusivamente pelos 4 membros da família, acessado via rede Wi-Fi local e, fora de casa, pela rede privada do Tailscale (ADR-001). A experiência de uso precisa ser simples e sem fricção — especialmente para os membros mais velhos da família. O sistema precisa identificar quem realizou cada tarefa para distribuir pontos corretamente, e esses pontos servem de base para a mesada.
