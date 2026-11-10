@@ -4,9 +4,9 @@
 
 ## Resumo
 - **Onde paramos:** escopo redefinido (ADR-007) e ajustado pelo ADR-012: o event sourcing passa a ser justificado por medição comparativa, entram o estorno, a coluna `registrado_em` e a consulta Q8, e o particionamento (Fatia 6) vira opcional ao final. As decisões de modelagem da Fatia 1 estão fechadas nos ADRs 008 a 011.
-- **O que está commitado:** ADRs 007 a 011, CLAUDE.md, README e este arquivo (commits de 10/11/2026). **O ADR-012 e as atualizações que ele causou estão escritos, mas ainda não commitados.**
+- **O que está commitado:** ADRs 007 a 012, CLAUDE.md, README e este arquivo (commits de 10/11/2026).
 - **Fatia atual:** Fatia 1 — Registrar conclusão como evento (ainda não iniciada).
-- **Planejamento do Rafa:** a Liga é um projeto de cerca de 3 meses, o item 02 do roadmap geral, depois do agente de candidaturas. As Fatias 1 e 1b avançam até 17/01/2027 se couberem, sem pressão.
+- **Planejamento do Rafa:** a Liga é um projeto de cerca de 3,5 meses (estimativa revista depois do ADR-012), o item 02 do roadmap geral, depois do agente de candidaturas. As Fatias 1 e 1b avançam até 17/01/2027 se couberem, sem pressão.
 
 ## Ajuste do ADR-012 (10/11/2026)
 - **Prova de B por comparação:** o placar e as sequências são calculados por SQL direto, projeção incremental, replay completo, rollup e replay a partir de snapshot, e o relatório final responde quando cada forma compensa.
