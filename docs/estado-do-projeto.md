@@ -1,19 +1,18 @@
 # Estado do Projeto
 
-*Última atualização: 09/11/2026*
+*Última atualização: 10/11/2026*
 
 ## Resumo
-- **Onde paramos:** mudança de rota. O projeto deixou de ser o sistema de uma família e passou a ser um produto multi-família, para prática e portfólio (ADR-006). Fatia 0 concluída; roadmap refeito.
-- **O que está commitado:** infraestrutura do compose (Postgres 18), `.env` fora do git com `.env.example`, configuração do datasource, Flyway com V1, CLAUDE.md, ADRs 001 a 006 e README.
-- **Fatia atual:** Fatia 1 — Registrar conclusão, já com família e membros como tabelas (ainda não iniciada).
+- **Onde paramos:** escopo redefinido pela quarta e última vez (ADR-007). A Liga passa a ser um projeto para aprender Postgres com volume (A) e event sourcing com projeções (B), provando com medição. Ninguém vai usá-la. As decisões de modelagem da Fatia 1 estão fechadas nos ADRs 008 a 011.
+- **O que está commitado:** até o ADR-006 e o README da rota multi-família. **Os ADRs 007 a 011 e as atualizações do CLAUDE.md, README e deste arquivo estão escritos, mas ainda não commitados.**
+- **Fatia atual:** Fatia 1 — Registrar conclusão como evento (ainda não iniciada).
 
-## Mudança de rota (09/11/2026)
-- ADR-006 criado: produto multi-família, sem hospedagem pública, pronto para deploy.
-- ADR-001 (infraestrutura local) e ADR-002 (sem autenticação) marcados como substituídos.
-- ADR-003 revisado: membros como registros de uma família; fatia de recorrência renumerada.
-- ADR-004 e ADR-005 continuam valendo sem mudança.
-- CLAUDE.md: produto, decisões fechadas (1 a 4 e 8 mudaram, entrou a 10), stack e roadmap atualizados.
-- A família do autor passa a ser a família de exemplo do seed e testa cada fatia, sem uso diário.
+## Mudança de rota (10/11/2026)
+- **ADR-007** (escopo): substitui o ADR-006 e descarta o ADR-003.
+- **ADR-008** (modelo de eventos): substitui o ADR-005.
+- **ADR-009** (identidade, ordem e tempo), **ADR-010** (seed de exemplo e reset) e **ADR-011** (testes e CI): novos.
+- ADR-001 e ADR-002 já eram históricos desde o ADR-006.
+- Saem do projeto: autenticação, multi-tenancy, hospedagem, deploy, convites, papéis, e-mail, LGPD, recorrência, escala, níveis, títulos e dashboard como produto.
 
 ## Fatia 0 — Retomada (concluída)
 
@@ -23,33 +22,35 @@
 - [x] Spring conectado ao Postgres (datasource lendo o `.env` via `spring.config.import`)
 - [x] Flyway aplicando `V1__init.sql`, Hibernate em `validate`, `open-in-view: false`
 - [x] ADR-004 — Flyway como único dono do schema
-- [x] CLAUDE.md com as regras de trabalho e as decisões fechadas
-- [x] ADRs 001 a 003 revisados e ADR-005 — Histórico de pontos
 
 ## Próximo passo concreto
-Modelar a V2 da Fatia 1: família, membro, tarefa e conclusão, com tudo pertencendo a uma família. Junto com ela, escrever o ADR-007 (como o isolamento entre famílias é armazenado) e decidir o tipo de ID e a forma de carregar o seed.
+Resolver as decisões abertas abaixo e então modelar a **V2** da Fatia 1: família, membro, tarefa e a tabela `evento`, com o trigger que recusa `UPDATE` e `DELETE`. Em paralelo, trocar o `contextLoads` por Testcontainers e criar o workflow do CI.
+
+## Decisões abertas antes da Fatia 1
+| Decisão | Contexto |
+|---|---|
+| Início da semana | O placar da semana (Q1) precisa de uma definição. O `date_trunc('week', ...)` do Postgres começa na segunda-feira (padrão ISO) |
+| Cadastro de famílias, membros e tarefas | Quem clonar deve poder criar uma família nova e novas tarefas, mas nenhuma das fatias entrega esse cadastro. Candidata: uma fatia 1b |
+| Conteúdo do exemplo | Quais tarefas, com quantos pontos, entram no catálogo da família de exemplo |
+| Colunas exatas da V2 | Definidas na migration, respeitando o ADR-008 |
 
 ## Pendências técnicas (não são decisões)
-- `Dockerfile` ainda é placeholder e não está commitado. Entra na Fatia 5 (pronto para deploy).
-- Serviço `back-spring` do compose ainda não recebe as variáveis do banco, e a URL do datasource aponta para `localhost`. Fatia 5.
+- O `Dockerfile` placeholder continua fora do git. Não tem uso no escopo atual.
+- O serviço `back-spring` do compose não recebe as variáveis do banco e a URL do datasource aponta para `localhost`. Sem uso por enquanto, já que a aplicação roda fora do container.
 
 ## Backlog de decisões adiadas
 | Decisão | Contexto | Revisitar na |
 |---|---|---|
-| Forma de carregar o seed | A família de exemplo (a do autor) vai numa migration, e portanto para qualquer banco, ou só no ambiente de desenvolvimento? | Fatia 1 |
-| IDs sequenciais × UUID | IDs sequenciais nas URLs facilitam adivinhar recursos de outra família (IDOR) | Fatia 1 |
-| Estratégia de testes de integração | O teste `contextLoads` depende do Postgres do compose rodando; avaliar Testcontainers. Ganha peso com os testes de isolamento | Fatia 1 |
-| Aplicação do isolamento entre famílias | Onde o filtro por família é garantido (em cada consulta, num ponto central, no banco) e como é testado | Fatia 2 |
-| Mecanismo de autenticação | Sessão com cookie × token (JWT); a tela é servida pelo próprio Spring | Fatia 2 |
-| Usuário em várias famílias | Separar usuário (quem faz login) de membro (pessoa numa família); um usuário pode estar em mais de uma família, por exemplo pais separados? | Fatia 2 |
-| Fórmula de pontos | Esforço braçal, tempo e frequência semanal; número digitado ou calculado? | Fatia 3 |
-| Contas de crianças e LGPD | A LGPD (art. 14) exige consentimento dos responsáveis para dados de crianças. Ideias: criança não cria conta; perfil criado pelo responsável, sem e-mail e senha; criança sem permissão para criar tarefas | Fatia 3 |
-| Envio de e-mail | Convites e recuperação de senha precisam de SMTP; no desenvolvimento, um container que captura os e-mails (Mailpit) | Fatia 4 |
-| Exclusão de conta × histórico | O direito de eliminação da LGPD conflita com o histórico imutável de conclusões (ADR-005) | Fatia 4 |
-| Conversão de pontos em mesada | Regra ainda não definida; num produto, provavelmente configurada por família | Fatia 6 |
-| Início da semana configurável | Segunda, domingo ou sábado; num produto, por família | Fatia 6 |
-| Fuso horário por família | Hoje fixo em America/Sao_Paulo; num produto, cada família poderia ter o seu | Fatia 6 |
-| Conclusão avulsa ↔ instância gerada | Como o registro da Fatia 1 se liga às instâncias do `@Scheduled` | Fatia 7 |
-| Penalidade por card não concluído | O ADR-003 sugere auditoria, mas sem consequência definida | Fatia 7 |
-| Motivo da transferência + penalidade | Tarefa atribuída a um membro e concluída por outro: registrar o motivo (ex.: "esqueceu", "estava fora") e penalizar conforme o motivo. Ideia do Rafa em 02/11/2026 | Fatia 7 |
-| Frequência variável das tarefas | Tarefas como louça e passear com o cachorro acontecem zero, uma ou várias vezes por dia, o que não cabe em um card por instância | Fatia 7 |
+| Onde vive a projeção e como é atualizada | Em memória ou em tabela; síncrona na transação ou assíncrona | Fatia 2 |
+| Gerador pelo domínio × direto no banco | Pelo domínio respeita as regras, mas demora para 10 milhões; direto é rápido, mas pode gerar o que o domínio recusaria | Fatia 3 |
+| Como medir | `pgbench` com scripts × harness em Java; como separar cache frio e quente | Fatia 4a |
+| Métrica do ranking da Q7 | Pontos por membro, pontos por atividade ou atividades por membro. A consulta pode calcular as três | Fatia 4b |
+| Chave e granularidade da partição | Por mês sobre o instante do evento, e o efeito na chave primária | Fatia 6 |
+| Estratégia de snapshot | Por quantidade de eventos ou por período, respeitando a armadilha da ordem de confirmação (ADR-009) | Fatia 8a |
+| Conversão de eventos antigos | Como a leitura converte v1 em v2 | Fatia 8b |
+
+## Fora do escopo (ideias registradas)
+- **Tarefas configuráveis** (Rafa, 10/11/2026): periodicidade escolhida pelo usuário (diária, semanal), horário fixo ou não, responsável opcional, e redirecionamento ao concluir com motivo e possível penalidade. Seria a recorrência e a escala do ADR-003. O motivo da penalidade já cabe no `payload` do evento.
+- Detecção de trapaça: opcional, ao final.
+- Fechamento de período, fuso e início da semana por família, conversão de pontos em mesada.
+- Autenticação, convites, papéis, e-mail, contas de crianças e LGPD, exclusão de conta: saíram com o ADR-007.

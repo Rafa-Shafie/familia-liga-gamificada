@@ -1,7 +1,14 @@
 # ADR-005: Histórico de Pontos — Um Registro por Conclusão
 
 ## Status
-Aceito
+Substituído pelo [ADR-008](ADR-008-modelo-de-eventos.md) em 10/11/2026.
+
+Os princípios que continuam verdadeiros (pontos congelados no registro, passado
+imutável, nada resetado na virada do ano) foram reescritos no ADR-008. A regra
+"nenhum total é armazenado" foi trocada por uma exceção medida. O texto abaixo
+é mantido como registro histórico.
+
+*Antes: Aceito.*
 
 ## Contexto
 Os pontos são a base da mesada dos membros da família, então a métrica precisa

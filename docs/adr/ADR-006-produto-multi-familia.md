@@ -1,7 +1,13 @@
 # ADR-006: Produto Multi-Família
 
 ## Status
-Aceito (09/11/2026). Substitui o ADR-001 e o ADR-002.
+Substituído pelo [ADR-007](ADR-007-redefinicao-do-escopo.md) em 10/11/2026.
+
+A autenticação e o multi-tenancy, motivo único desta decisão, passaram a ser
+praticados em outros projetos do autor. A Liga ficou sem uma razão própria
+para tê-los. O texto abaixo é mantido como registro histórico.
+
+*Antes: Aceito (09/11/2026). Substituía o ADR-001 e o ADR-002.*
 
 ## Contexto
 A Liga Familiar Gamificada nasceu como o sistema de uma família só: rodando no

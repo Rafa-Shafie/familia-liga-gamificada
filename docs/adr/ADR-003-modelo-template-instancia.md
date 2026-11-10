@@ -1,17 +1,15 @@
 # ADR-003: Modelo de Domínio — Template, Escala e Instância
 
 ## Status
-Proposto (revisado em 09/11/2026)
+Descartado pelo [ADR-007](ADR-007-redefinicao-do-escopo.md) em 10/11/2026.
 
-A implementação foi adiada para a fatia de escala e recorrência. Por ser a
-parte mais complexa e menos validada do domínio, este modelo será reavaliado
-com os testes da família antes de ser implementado. Até lá, a Fatia 1 registra
-conclusões avulsas (ADR-005); como elas se relacionam com `InstanciaTarefa`
-será decidido na fatia de recorrência.
+Recorrência, escala e transferência de tarefas saíram do escopo: não ensinam
+nada de Postgres em volume nem de event sourcing, e dependeriam de uso real
+que não existirá. O modelo fica como registro histórico. Se um dia a ideia
+voltar, ela pode ser acrescentada como novos tipos de evento (ADR-008), sem
+alterar os existentes.
 
-Com o produto multi-família (ADR-006), os membros deixam de ser um Enum e
-passam a ser registros de uma família; as três estruturas abaixo também
-pertencem a uma família.
+*Antes: Proposto (revisado em 09/11/2026), com implementação adiada.*
 
 ## Contexto
 O sistema precisa gerenciar tarefas recorrentes com regras complexas para os
