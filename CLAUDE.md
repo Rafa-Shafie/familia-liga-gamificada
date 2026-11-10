@@ -135,6 +135,9 @@ Docker, PostgreSQL, Spring conectado, Flyway com a V1, ADRs.
 **Fatia 1 — Registrar conclusão como evento**
 V2 com família, membro, tarefa e a tabela de eventos; família de exemplo; registrar uma conclusão e ver o placar da semana; tela mínima para aprender a conexão front/back; Testcontainers e CI.
 
+**Fatia 1b — Cadastro de famílias, membros e tarefas**
+Criar, consultar e alterar (sem apagar, porque eventos referenciam esses registros), com API e tela mínima. Existe para quem clonar o repositório poder criar uma família nova e tarefas novas.
+
 **Fatia 2 — Penalidade e projeção por replay**
 Evento de penalidade; placar como projeção reconstruível; prova de que replay e incremental dão o mesmo resultado.
 

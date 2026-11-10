@@ -91,6 +91,7 @@ registrada de por que não houve.
 | Fatia | Entrega |
 |---|---|
 | 1 | Registrar conclusão como evento, com testes de integração e CI |
+| 1b | Cadastro de famílias, membros e tarefas (criar, consultar e alterar, sem apagar), com API e tela mínima |
 | 2 | Penalidade e projeção por replay |
 | 3 | Gerador de dados sintéticos |
 | 4a | Baseline das agregações simples |

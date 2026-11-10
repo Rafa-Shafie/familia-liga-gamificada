@@ -73,6 +73,12 @@ por um trigger, com um teste que tenta violar a regra. A limpeza total, usada
 por testes e pelo gerador de dados, é feita com `TRUNCATE`, que não dispara
 triggers de linha.
 
+**Cadastros não são apagados.** Membros e tarefas referenciados por eventos
+não podem ser removidos: o banco recusa, por chave estrangeira. O cadastro
+oferece criar, consultar e alterar. Alterar os pontos de uma tarefa vale só
+para eventos futuros. Se um dia for preciso retirar uma tarefa de circulação,
+um campo `ativo` seria acrescentado em uma fatia futura.
+
 **Versionamento.** Cada evento guarda a versão do seu formato. A leitura
 converte versões antigas para o modelo atual (Fatia 8b), e eventos v1 ficam
 versionados no repositório como fixture de teste.
@@ -96,3 +102,4 @@ versionados no repositório como fixture de teste.
   tipos (uma penalidade pode não ter tarefa)
 - Sem piso, placares podem ser negativos
 - Corrigir um erro exige um evento compensatório, nunca uma edição
+- Não é possível apagar um membro ou uma tarefa que já tenha eventos

@@ -29,10 +29,36 @@ Resolver as decisões abertas abaixo e então modelar a **V2** da Fatia 1: famí
 ## Decisões abertas antes da Fatia 1
 | Decisão | Contexto |
 |---|---|
-| Início da semana | O placar da semana (Q1) precisa de uma definição. O `date_trunc('week', ...)` do Postgres começa na segunda-feira (padrão ISO) |
-| Cadastro de famílias, membros e tarefas | Quem clonar deve poder criar uma família nova e novas tarefas, mas nenhuma das fatias entrega esse cadastro. Candidata: uma fatia 1b |
-| Conteúdo do exemplo | Quais tarefas, com quantos pontos, entram no catálogo da família de exemplo |
+| Valores do catálogo de exemplo | Proposta abaixo, aguardando a confirmação do Rafa. Os nomes dos membros seguem genéricos (ADR-010) |
 | Colunas exatas da V2 | Definidas na migration, respeitando o ADR-008 |
+
+## Catálogo da família de exemplo (proposta)
+Tarefas da casa do Rafa (apartamento de cerca de 100 m²). Régua: 1 ponto ≈ 1 minuto de trabalho, mais 5 se for desagradável e mais 5 se exigir esforço físico. Os pontos são um número digitado; não há fórmula no sistema.
+
+| Tarefa | Pontos |
+|---|---|
+| Aspirar banheiro | 5 |
+| Arrumar quarto 1 | 8 |
+| Arrumar quarto 2 | 8 |
+| Arrumar suíte | 15 |
+| Aspirar varanda | 10 |
+| Aspirar quarto 1 | 10 |
+| Aspirar quarto 2 | 10 |
+| Aspirar suíte | 30 |
+| Aspirar sala e cozinha | 55 |
+| Passear com o cachorro | 60 |
+| Lavar roupa na máquina | 10 |
+| Estender roupas | 20 |
+| Passar roupa | 50 |
+| Lavar louça | 25 |
+| Limpar fogão | 25 |
+| Cozinhar | 45 |
+| Lavar banheiro | 35 |
+| Lavar varanda | 40 |
+| Trocar o pinico do cachorro | 10 |
+| Limpar o pinico do cachorro | 10 |
+
+Relações pedidas: quartos 1 e 2 mais a suíte (50) valem menos que sala e cozinha (55); passear com o cachorro (60) vale mais que aspirar sala e cozinha; limpar o fogão é igual a lavar a louça; limpar o pinico é igual a trocar. Passear tem valor fixo, sem considerar a duração.
 
 ## Pendências técnicas (não são decisões)
 - O `Dockerfile` placeholder continua fora do git. Não tem uso no escopo atual.

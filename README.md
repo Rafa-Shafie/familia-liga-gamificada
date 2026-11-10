@@ -115,6 +115,7 @@ O projeto avança em **fatias verticais**: cada fatia é uma funcionalidade pequ
 
 - [x] **Fatia 0 — Retomada:** Docker, PostgreSQL, Spring conectado ao banco, Flyway, ADRs
 - [ ] **Fatia 1 — Registrar conclusão como evento:** família, membro, tarefa e tabela de eventos; placar da semana; Testcontainers e CI
+- [ ] **Fatia 1b — Cadastro de famílias, membros e tarefas:** criar, consultar e alterar, para quem clonar montar a própria família
 - [ ] **Fatia 2 — Penalidade e projeção por replay:** o placar reconstruível a partir dos eventos
 - [ ] **Fatia 3 — Gerador de dados sintéticos:** 2 anos de eventos, de 100 mil a 10 milhões
 - [ ] **Fatia 4a — Baseline das agregações simples:** harness de medição e `EXPLAIN ANALYZE`

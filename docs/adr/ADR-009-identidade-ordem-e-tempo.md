@@ -46,6 +46,8 @@ respeitar a mesma regra. O replay completo roda sobre dados já confirmados.
 - Os filtros de período são escritos como intervalos sobre o instante, e a
   conversão de fuso fica apenas no agrupamento, para o índice continuar útil
 - O Hibernate é configurado em UTC
+- A semana começa na segunda-feira (padrão ISO), que é o que
+  `date_trunc('week', ...)` já faz. Não é configurável
 
 ## Consequências
 
@@ -61,5 +63,6 @@ respeitar a mesma regra. O replay completo roda sobre dados já confirmados.
   restringe o desenho de projeções incrementais
 - Agrupar por período exige a conversão de fuso em cada consulta, com custo
   que a Fatia 5 vai medir
+- Quem preferir a semana começando no domingo não consegue configurar isso
 - A chave primária terá de incluir a coluna de partição quando a tabela for
   particionada (Fatia 6), o que exige uma migration que altera a chave
