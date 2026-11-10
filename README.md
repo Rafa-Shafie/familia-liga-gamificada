@@ -7,9 +7,11 @@ Gerenciador de tarefas domésticas gamificado em que cada tarefa concluída vale
 
 As duas se ligam: o replay de milhões de eventos é lento, e é isso que justifica as otimizações. O projeto gera dados sintéticos (2 anos, de 100 mil a 10 milhões de eventos) e prova, com medição antes e depois, que as consultas ficaram mais rápidas.
 
+**Por que event sourcing num domínio tão simples?** Não é o domínio que o exige: uma tabela append-only com `SUM` resolveria o placar. A Liga é um exercício de aprendizado, e o event sourcing é **medido contra essa alternativa**. O mesmo placar é calculado por SQL direto, projeção incremental, replay completo, rollup e replay a partir de snapshot, nos três volumes, e o relatório final responde quando cada forma compensa. O [ADR-012](docs/adr/ADR-012-justificativa-do-event-sourcing.md) registra também quando eu não usaria event sourcing.
+
 Não há usuários, login nem hospedagem. O sistema comporta várias famílias, mas a família é só uma forma de organizar os dados, sem isolamento de segurança. Para conhecer, basta clonar e rodar localmente.
 
-> **Status:** em desenvolvimento. A infraestrutura (Fatia 0) está concluída e as decisões de modelagem estão registradas nos ADRs 007 a 011. A Fatia 1 é a próxima.
+> **Status:** em desenvolvimento. A infraestrutura (Fatia 0) está concluída e as decisões de modelagem estão registradas nos ADRs 007 a 012. A Fatia 1 é a próxima.
 
 ## Stack
 
@@ -30,8 +32,9 @@ As decisões relevantes são registradas como ADRs (Architecture Decision Record
 
 | ADR | Decisão | Status |
 |---|---|---|
-| [ADR-007](docs/adr/ADR-007-redefinicao-do-escopo.md) | Redefinição do escopo: Postgres em volume e event sourcing | Aceito |
-| [ADR-008](docs/adr/ADR-008-modelo-de-eventos.md) | Eventos imutáveis como fonte da verdade | Aceito |
+| [ADR-012](docs/adr/ADR-012-justificativa-do-event-sourcing.md) | Event sourcing justificado por medição, estorno e nova ordem das fatias | Aceito |
+| [ADR-007](docs/adr/ADR-007-redefinicao-do-escopo.md) | Redefinição do escopo: Postgres em volume e event sourcing | Aceito, alterado pelo ADR-012 |
+| [ADR-008](docs/adr/ADR-008-modelo-de-eventos.md) | Eventos imutáveis como fonte da verdade | Aceito, complementado pelo ADR-012 |
 | [ADR-009](docs/adr/ADR-009-identidade-ordem-e-tempo.md) | IDs, ordem do replay e tratamento de fuso | Aceito |
 | [ADR-010](docs/adr/ADR-010-seed-de-exemplo-e-reset.md) | Família de exemplo, geração de volume e reset | Aceito |
 | [ADR-011](docs/adr/ADR-011-testes-e-ci.md) | Testcontainers com Postgres real e CI | Aceito |
@@ -111,22 +114,23 @@ O Maven não precisa ser instalado: o projeto usa o Maven Wrapper (`mvnw`).
 
 ## Roadmap
 
-O projeto avança em **fatias verticais**: cada fatia é uma funcionalidade pequena que atravessa o sistema e fica funcionando, testada, antes de a próxima começar. O escopo está congelado no ADR-007.
+O projeto avança em **fatias verticais**: cada fatia é uma funcionalidade pequena que atravessa o sistema e fica funcionando, testada, antes de a próxima começar. O escopo está congelado nos ADRs 007 e 012.
 
 - [x] **Fatia 0 — Retomada:** Docker, PostgreSQL, Spring conectado ao banco, Flyway, ADRs
 - [ ] **Fatia 1 — Registrar conclusão como evento:** família, membro, tarefa e tabela de eventos; placar da semana; Testcontainers e CI
 - [ ] **Fatia 1b — Cadastro de famílias, membros e tarefas:** criar, consultar e alterar, para quem clonar montar a própria família
-- [ ] **Fatia 2 — Penalidade e projeção por replay:** o placar reconstruível a partir dos eventos
-- [ ] **Fatia 3 — Gerador de dados sintéticos:** 2 anos de eventos, de 100 mil a 10 milhões
+- [ ] **Fatia 2 — Penalidade, estorno e projeção por replay:** o placar reconstruível a partir dos eventos, com correção por estorno e duas linhas do tempo
+- [ ] **Fatia 3 — Gerador de dados sintéticos:** 2 anos de eventos, de 100 mil a 10 milhões, com estornos e registros tardios
 - [ ] **Fatia 4a — Baseline das agregações simples:** harness de medição e `EXPLAIN ANALYZE`
-- [ ] **Fatia 4b — Baseline das windows e consultas globais:** e o tempo de replay completo
+- [ ] **Fatia 4b — Baseline das windows e consultas globais:** inclusive o placar numa data passada, e o tempo de replay completo
 - [ ] **Fatia 5 — Índices:** antes e depois, por consulta
-- [ ] **Fatia 6 — Particionamento por mês:** com prova de partition pruning
 - [ ] **Fatia 7 — Rollups e view materializada:** atualizados por `@Scheduled`, com prova de idempotência
 - [ ] **Fatia 8a — Snapshots:** replay a partir de snapshot
 - [ ] **Fatia 8b — Versionamento de eventos:** evolução de v1 para v2
 
-Os relatórios de medição ficarão em `docs/medicoes/`, a partir da Fatia 4a.
+Opcionais, ao final: **Fatia 6 — Particionamento por mês**, com prova de partition pruning, e detecção de trapaça.
+
+Os relatórios de medição ficarão em `docs/medicoes/`, a partir da Fatia 4a. O relatório final compara as formas de leitura e responde quando o event sourcing compensa.
 
 O andamento detalhado fica em [docs/estado-do-projeto.md](docs/estado-do-projeto.md).
 

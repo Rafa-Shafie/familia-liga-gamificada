@@ -1,7 +1,8 @@
 # ADR-007: Redefinição do Escopo — Postgres em Volume e Event Sourcing
 
 ## Status
-Aceito (10/11/2026). Substitui o ADR-006 e descarta o ADR-003.
+Aceito (10/11/2026). Substitui o ADR-006 e descarta o ADR-003. Alterado pelo
+ADR-012 (prova de B por comparação, consulta Q8 e nova ordem das fatias).
 
 ## Contexto
 O projeto nasceu como um sistema doméstico para uma família (ADR-001 e

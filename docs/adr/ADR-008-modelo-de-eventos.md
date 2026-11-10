@@ -1,7 +1,8 @@
 # ADR-008: Modelo de Eventos — Eventos Imutáveis como Fonte da Verdade
 
 ## Status
-Aceito (10/11/2026). Substitui o ADR-005.
+Aceito (10/11/2026). Substitui o ADR-005. Complementado pelo ADR-012 (evento
+`ConclusaoEstornada` e a coluna `registrado_em`).
 
 ## Contexto
 O ADR-007 define como objetivo aprender event sourcing com projeções (B) e

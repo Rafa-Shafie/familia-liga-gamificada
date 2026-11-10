@@ -12,11 +12,13 @@ Trate este projeto como produto real de engenharia. Seu objetivo é me transform
   - **A — Postgres com volume:** consultas analíticas (window functions, CTEs, `date_trunc` e fuso), `EXPLAIN ANALYZE`, índices, particionamento por mês, views materializadas e rollups por `@Scheduled`.
   - **B — Event sourcing com projeções:** pontos como eventos imutáveis; placar e sequências como projeções reconstruíveis por replay, com snapshots e versionamento de eventos.
 - **A ligação entre os dois:** o replay de milhões de eventos é lento, e isso justifica as otimizações de A.
+- **Por que event sourcing num domínio que não o exige (ADR-012):** a Liga é um exercício de aprendizado. O event sourcing não é justificado pelo domínio, e sim medido: o placar e as sequências são calculados por SQL direto, projeção incremental, replay completo, rollup e replay a partir de snapshot, e o relatório responde quando cada forma compensa.
 - **Ninguém vai usar.** Sem login, sem hospedagem, sem deploy, sem tela elaborada. O sistema comporta várias famílias, mas a família é só organização dos dados, sem isolamento de segurança.
 - **Dados sintéticos:** 2 anos de eventos, várias famílias de tamanhos e nomes variados, em volumes de 100 mil, 1 milhão e 10 milhões, com semente fixa.
 - **Família de exemplo:** PAPAI, MAMAE, FILHA e FILHO, com tarefas prontas. Quem clonar o repositório pode alterá-la e criar outras sem afetar ninguém, porque cada clone tem o próprio banco.
 - **Escopo congelado no ADR-007.** Esta é a quarta redefinição do projeto; mudar o escopo exige um novo ADR.
 - **Critério de pronto:** teste automatizado passando no CI e, a partir da Fatia 4a, relatório de medição versionado.
+- **Liga concluída:** todas as fatias, exceto a 6 (particionamento) e a detecção de trapaça, que são opcionais ao final (ADR-012).
 
 ## Princípio central: fatia vertical
 
@@ -93,6 +95,7 @@ Estas decisões já foram discutidas e justificadas. Não reabra nenhuma delas, 
 8. **Testes com Testcontainers e PostgreSQL 18 real, sem H2** (ADR-011).
 9. **PostgreSQL**, pela agregação nativa por período e fuso (`date_trunc`, `AT TIME ZONE`) e pelos recursos de particionamento e views materializadas.
 10. **Flyway é o único dono do schema**; o Hibernate fica em `ddl-auto: validate` (ADR-004).
+11. **Justificativa de B por medição comparativa, estorno e duas linhas do tempo** (ADR-012): evento `ConclusaoEstornada` com índice único contra estorno duplicado; colunas `ocorreu_em` e `registrado_em`, a segunda entrando na Fatia 2; consulta Q8 (placar numa data passada, com o que se sabia nela). A simulação de regra nova sobre o histórico foi descartada.
 
 ## Documentação: zona de colaboração ativa
 
@@ -138,23 +141,20 @@ V2 com família, membro, tarefa e a tabela de eventos; família de exemplo; regi
 **Fatia 1b — Cadastro de famílias, membros e tarefas**
 Criar, consultar e alterar (sem apagar, porque eventos referenciam esses registros), com API e tela mínima. Existe para quem clonar o repositório poder criar uma família nova e tarefas novas.
 
-**Fatia 2 — Penalidade e projeção por replay**
-Evento de penalidade; placar como projeção reconstruível; prova de que replay e incremental dão o mesmo resultado.
+**Fatia 2 — Penalidade, estorno e projeção por replay**
+Eventos de penalidade e de estorno; coluna `registrado_em`; placar como projeção reconstruível; prova de que replay e incremental dão o mesmo resultado, inclusive com estornos.
 
 **Fatia 3 — Gerador de dados sintéticos**
-Comando que gera 2 anos de eventos em 100 mil, 1 milhão e 10 milhões, com semente fixa.
+Comando que gera 2 anos de eventos em 100 mil, 1 milhão e 10 milhões, com semente fixa, incluindo estornos e registros tardios.
 
 **Fatia 4a — Baseline das agregações simples**
 Q1, Q3 e Q5, harness de medição e relatório com `EXPLAIN ANALYZE`.
 
 **Fatia 4b — Baseline das windows e consultas globais**
-Q2, Q4, Q6 e Q7, e o tempo de replay completo nos três volumes.
+Q2, Q4, Q6, Q7 e Q8, e o tempo de replay completo nos três volumes.
 
 **Fatia 5 — Índices**
 Antes e depois, por consulta.
-
-**Fatia 6 — Particionamento por mês**
-Migração da tabela de eventos, com prova de que só as partições do período são lidas.
 
 **Fatia 7 — Rollups e view materializada**
 Rollup atualizado por `@Scheduled`, com prova de idempotência.
@@ -165,7 +165,12 @@ Replay a partir de snapshot, medido contra o replay completo.
 **Fatia 8b — Versionamento de eventos**
 Evolução de v1 para v2, com eventos antigos ainda sendo lidos.
 
-*Opcional, ao final:* detecção de trapaça (rajadas de conclusões).
+**Relatório final:** comparação das formas de leitura (SQL direto, projeção incremental, replay completo, rollup e snapshot) nos três volumes, respondendo quando o event sourcing compensa (ADR-012).
+
+*Opcionais, ao final (ADR-012):*
+
+- **Fatia 6 — Particionamento por mês:** migração da tabela de eventos, com prova de que só as partições do período são lidas. Exige redesenhar o índice único do estorno.
+- Detecção de trapaça (rajadas de conclusões).
 
 O roadmap só muda por novo ADR.
 
